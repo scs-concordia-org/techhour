@@ -6,4 +6,6 @@ Collaborative repository for SCS TechHour projects and workshops.
 
 Project planning and setup.
 
-## CHANGE TEST TEST TEST
+## Contributing
+
+Make changes on a feature branch and submit them through a pull request.
