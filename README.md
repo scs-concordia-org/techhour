@@ -116,7 +116,6 @@ The planned MVP will use passwordless Concordia email authentication:
 2. The application sends a one-time verification code.
 3. The user enters the code.
 4. The application creates a secure session.
-   a secure session.
 5. The user remains signed in until the session expires or they log out.
 
 The exact eligible Concordia email domains and authentication library still need to be confirmed.
