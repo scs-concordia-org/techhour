@@ -1,4 +1,5 @@
 - Which Concordia email  domains student should currently use
+  
 All concordia student and teacher currently use is the same root domain that is owned by concordia which is: `concordia.ca`. So to identify the email we could just check that the domain ends in `concordia.ca`
 
 According to the [Concordia email policy](https://www.concordia.ca/content/dam/common/docs/policies/official-policies/VPSS-34.pdf), Under `Definitions` it specifies: 
