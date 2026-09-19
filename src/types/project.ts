@@ -6,10 +6,10 @@ interface Project {
     creator: string;
     collaborators: string[];
     tags: string[];
-    projectStatus: "ongoing" | "completed";
+    projectStatus: "prototype" | "ongoing" | "completed";
     difficulty: 1 | 2 | 3 | 4 | 5;
     isSeekingCollaborators: boolean;
-    contactMethods: "email" | "discord" | "linkedin" | "instagram" | "other";
+    contactMethods?: ("email" | "discord" | "linkedin" | "instagram" | "other")[];
     collaborationAvailability?: "part-time" | "full-time" | "flexible";
     collaborationNeeds?: string;
     createdAt: Date;
