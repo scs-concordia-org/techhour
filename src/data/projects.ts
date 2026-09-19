@@ -17,7 +17,7 @@ const projects: Project[] = [
     {
         id: "2",
         title: "Unity Backrooms Level Concordia",
-        description: "A Unity project which isa 3D game where the player is trapped in a backrooms level and needs to escape. They need to avoid ENGR 213 Entities.",
+        description: "A Unity project which is a 3D game where the player is trapped in a backrooms level and needs to escape. They need to avoid ENGR 213 Entities.",
         image: "https://picsum.photos/400/400",
         creator: "Miks Weider",
         collaborators: ["Akshan", "Jayson", "Josh"],
@@ -123,7 +123,7 @@ const projects: Project[] = [
     {
         id: "9",
         title: "Chess Clone",
-        description: "A chess clong but you use diffrent characters to represent the pieces.",
+        description: "A chess clone but you use different characters to represent the pieces.",
         image: "https://picsum.photos/400/400",
         creator: "Jackson",
         collaborators: [],
