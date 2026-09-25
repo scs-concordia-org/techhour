@@ -45,7 +45,7 @@ A user should be able to request a code when creating an account about 3 times a
 According to the [OWASP Guide for Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration)
 > Both the idle and absolute timeout values are highly dependent on how critical the web application and its data are. Common idle timeouts ranges are 2-5 minutes for high-value applications and 15-30 minutes for low risk applications. Absolute timeouts depend on how long a user usually uses the application. If the application is intended to be used by an office worker for a full day, an appropriate absolute timeout range could be between 4 and 8 hours.
 
-Where the idle timeout represent according to [Mozilla](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management#session_lifetime)
+What the idle timeout represent according to [Mozilla](https://developer.mozilla.org/en-US/docs/Web/Security/Authentication/Session_management#session_lifetime)
 
 > **Idle timeout**: this times out after a period of inactivity, defined as a period in which the client has sent no HTTP requests to the server. After it times out, the user must reauthenticate.
 
