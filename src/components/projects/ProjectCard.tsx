@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { Project } from "@/types/project";
+import placeholderImage from "@/../public/images/project_placeholder.png";
 
 export default function ProjectCard({ project }: { project: Project }) {
-    const { title, image, description, tags, projectStatus, difficulty, isSeekingCollaborators, createdAt } = project;
+    const { title, image, description, tags, projectStatus, difficulty, isSeekingCollaborators } = project;
     return (
         <div>
-            <h2>Sample Project Title</h2>
-            <Image src="" alt="Project alt text" width={500} height={300} />
+            <h2>{title}</h2>
+            <Image src={image || placeholderImage} alt="Project alt text" width={500} height={300} />
             <p>{description.trim().slice(0, 100)}...</p>
             <ul>
                 <li>
