@@ -146,6 +146,19 @@ const projects: Project[] = [
         isSeekingCollaborators: false,
         createdAt: new Date("2026-12-02"),
     },
+    {
+        id: "11",
+        title: "Pictureless App",
+        description: "A project w/o a picture",
+        image: undefined,
+        creator: "Liam",
+        collaborators: [],
+        tags: ["ROBLOX"],
+        projectStatus: "completed",
+        difficulty: 1,
+        isSeekingCollaborators: false,
+        createdAt: new Date("2026-10-06"),
+    },
 ]
 
 
