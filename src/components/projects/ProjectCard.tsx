@@ -131,7 +131,10 @@ export default function ProjectCard({ project }: { project: Project }) {
           </div>
 
           <div className="absolute inset-0 flex flex-col justify-between bg-[#fff8e8] p-3 text-[#3d2a0a] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none">
-            <p className="line-clamp-5 text-sm leading-5">{description}</p>
+            <div className="min-h-0 space-y-1">
+              <p className="text-sm font-semibold leading-5">{title}</p>
+              <p className="line-clamp-4 text-sm leading-5">{description}</p>
+            </div>
             <div className="mt-3 space-y-2">
               <p className="truncate text-xs text-[#7a6030]">{creator}</p>
               <time
