@@ -1,5 +1,6 @@
+import ProjectCard from "@/components/projects/ProjectCard";
 import Image from "next/image";
-
+import projects from "@/data/projects";
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -38,6 +39,13 @@ export default function Home() {
             center.
           </p>
         </div>
+        <ProjectCard project={projects[0]}></ProjectCard>
+        <ProjectCard project={projects[1]}></ProjectCard>
+        <ProjectCard project={projects[2]}></ProjectCard>
+        <ProjectCard project={projects[3]}></ProjectCard>
+        <ProjectCard project={projects[4]}></ProjectCard>
+        <ProjectCard project={projects[5]}></ProjectCard>
+        <ProjectCard project={projects[6]}></ProjectCard>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
@@ -54,6 +62,7 @@ export default function Home() {
             />
             Deploy Now
           </a>
+
           <a
             className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"

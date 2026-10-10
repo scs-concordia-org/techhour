@@ -99,7 +99,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       aria-label={title}
       className="group w-full max-w-[18.5rem] cursor-pointer outline-none"
     >
-      <div className="flex h-8 w-[58%] items-end bg-[#f0cf6c] px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+      <div className="flex h-8 w-[58%] items-end bg-[#f0cf6c] pl-3 pr-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] [clip-path:polygon(0_0,calc(100%-1.5rem)_0,100%_100%,0_100%)]">
         <h2 className="truncate pb-1 text-sm font-semibold tracking-tight text-[#3d2a0a]">
           {title}
         </h2>
