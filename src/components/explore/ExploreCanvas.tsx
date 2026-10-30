@@ -162,7 +162,7 @@ export default function ExploreCanvas({ projects }: { projects: Project[] }) {
     <div
       ref={viewportRef}
       {...handlers}
-      className={`relative h-dvh w-full touch-none select-none overflow-hidden bg-background text-foreground [--fade:228_228_231] bg-[radial-gradient(ellipse_at_center,#fff_0%,#f4f4f5_45%,#e4e4e7_75%)] dark:[--fade:0_0_0] dark:bg-[radial-gradient(ellipse_at_center,#232323_0%,#0a0a0a_45%,#000_75%)] ${
+      className={`relative h-dvh w-full touch-none select-none overflow-clip bg-background text-foreground [--fade:228_228_231] bg-[radial-gradient(ellipse_at_center,#fff_0%,#f4f4f5_45%,#e4e4e7_75%)] dark:[--fade:0_0_0] dark:bg-[radial-gradient(ellipse_at_center,#232323_0%,#0a0a0a_45%,#000_75%)] ${
         dragging ? "cursor-grabbing" : "cursor-grab"
       }`}
     >

@@ -18,6 +18,18 @@ const LINE_HEIGHT_PX = 16;
 // Distance (px) from a limit at which its "no more projects" notice shows.
 const EDGE_TOLERANCE = 1;
 
+// Distance (px) one arrow key press pans; key repeat keeps it moving.
+const KEY_STEP = 160;
+const ARROW_KEYS: Record<string, Point> = {
+  ArrowLeft: { x: -1, y: 0 },
+  ArrowRight: { x: 1, y: 0 },
+  ArrowUp: { x: 0, y: -1 },
+  ArrowDown: { x: 0, y: 1 },
+};
+// A focused card inside this fraction of the screen from each edge is panned
+// to the middle; it matches where the edge fade starts to clear.
+const FOCUS_MARGIN = 0.2;
+
 type Bounds = { minX: number; maxX: number; maxY: number };
 
 /**
@@ -171,8 +183,18 @@ export function useCanvasPan(
       notify();
       frame.current = requestAnimationFrame(step);
     };
+    // Eases the camera by (dx, dy) from where the last glide was heading.
+    const glideBy = (dx: number, dy: number) => {
+      target.current = clampPoint(
+        { x: target.current.x + dx, y: target.current.y + dy },
+        view.current.bounds,
+      );
+      if (frame.current === null) {
+        last = performance.now();
+        frame.current = requestAnimationFrame(step);
+      }
+    };
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
       const unit =
         e.deltaMode === 1 ? LINE_HEIGHT_PX : e.deltaMode === 2 ? el.clientHeight : 1;
       let dx = e.deltaX * unit;
@@ -182,21 +204,57 @@ export function useCanvasPan(
         dx = dy;
         dy = 0;
       }
-      target.current = clampPoint(
-        {
-          x: target.current.x + dx * WHEEL_SPEED,
-          y: target.current.y + dy * WHEEL_SPEED,
-        },
-        view.current.bounds,
-      );
-      if (frame.current === null) {
-        last = performance.now();
-        frame.current = requestAnimationFrame(step);
+      // A long card's text panel scrolls itself (overscroll-contain stops it
+      // chaining); the canvas pans only when the pointer is outside it.
+      if (isInScrollArea(e.target, el)) return;
+      e.preventDefault();
+      glideBy(dx * WHEEL_SPEED, dy * WHEEL_SPEED);
+    };
+    // Tab or Shift+Tab onto a card pans it into the clear middle of the
+    // screen. The viewport is overflow: clip, so the browser's own
+    // scroll-into-view cannot shift it and drag the overlays along.
+    const onFocusIn = (e: FocusEvent) => {
+      const focused = e.target;
+      if (!(focused instanceof HTMLElement) || !focused.matches(":focus-visible")) {
+        return;
       }
+      const rect = (focused.closest("article") ?? focused).getBoundingClientRect();
+      const screen = el.getBoundingClientRect();
+      const padX = screen.width * FOCUS_MARGIN;
+      const padY = screen.height * FOCUS_MARGIN;
+      const inside =
+        rect.left >= screen.left + padX &&
+        rect.right <= screen.right - padX &&
+        rect.top >= screen.top + padY &&
+        rect.bottom <= screen.bottom - padY;
+      if (inside) return;
+      // Aim from the live position, not the last glide's target.
+      target.current = { ...pos.current };
+      glideBy(
+        rect.left + rect.width / 2 - (screen.left + screen.width / 2),
+        rect.top + rect.height / 2 - (screen.top + screen.height / 2),
+      );
+    };
+    // Arrow keys pan while focus is on the canvas or on nothing in particular.
+    const onKeyDown = (e: KeyboardEvent) => {
+      const dir = ARROW_KEYS[e.key];
+      if (!dir || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      const t = e.target;
+      const onPage = t === document.body || t === document.documentElement;
+      if (!onPage && !(t instanceof Node && el.contains(t))) return;
+      if (t instanceof HTMLElement && t.closest("input, textarea, select")) return;
+      // Arrows in a focused long text panel scroll it, never the canvas.
+      if (isInScrollArea(t, el)) return;
+      e.preventDefault();
+      glideBy(dir.x * KEY_STEP, dir.y * KEY_STEP);
     };
     el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("focusin", onFocusIn);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("focusin", onFocusIn);
+      window.removeEventListener("keydown", onKeyDown);
       stopEase();
       if (notifyFrame.current !== null) cancelAnimationFrame(notifyFrame.current);
       notifyFrame.current = null;
@@ -228,6 +286,26 @@ export function useCanvasPan(
   };
 
   return { viewportRef, size, dragging, handlers, edges, subscribe, readCamera };
+}
+
+/**
+ * True when `from` sits inside an element (below `root`) whose content
+ * overflows and scrolls, such as a long card's text panel. The canvas never
+ * pans from there, even once the text has reached its end.
+ */
+function isInScrollArea(from: EventTarget | null, root: HTMLElement): boolean {
+  if (!(from instanceof Element)) return false;
+  for (let el: Element | null = from; el && el !== root; el = el.parentElement) {
+    const style = getComputedStyle(el);
+    const scrollsY =
+      (style.overflowY === "auto" || style.overflowY === "scroll") &&
+      el.scrollHeight > el.clientHeight;
+    const scrollsX =
+      (style.overflowX === "auto" || style.overflowX === "scroll") &&
+      el.scrollWidth > el.clientWidth;
+    if (scrollsY || scrollsX) return true;
+  }
+  return false;
 }
 
 function clampPoint(p: Point, b: Bounds): Point {
