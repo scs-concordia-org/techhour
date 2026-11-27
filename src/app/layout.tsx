@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Concordia Student Projects Display",
-  description: "Explore students projects.",
+  title: "SCS Project Showcase",
+  description:
+    "Discover projects built by Concordia students and find collaborators.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

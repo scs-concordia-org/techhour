@@ -178,8 +178,8 @@ export default function ExploreCanvas({ projects }: { projects: Project[] }) {
         dragging ? "cursor-grabbing" : "cursor-grab"
       }`}
     >
-      <h1 className="pointer-events-none absolute left-6 top-5 z-20 text-2xl font-semibold tracking-tight text-[#fff4da]">
-        Website Name
+      <h1 className="pointer-events-none absolute left-6 right-6 top-5 z-20 text-2xl font-semibold tracking-tight text-[#fff4da]">
+        SCS Project Showcase
       </h1>
 
       {projects.length === 0 ? (
