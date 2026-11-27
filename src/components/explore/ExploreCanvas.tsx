@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useLayoutEffect, useMemo, useRef } from "react";
+import styles from "./ExploreCanvas.module.css";
 import {
   ChevronDown,
   ChevronLeft,
@@ -28,15 +29,8 @@ const NARROW_WIDTH = 600;
 /** Cards mount this far (px) before entering the screen, while still faded out. */
 const MOUNT_MARGIN = 400;
 
-/**
- * Fades the screen edges to the page backdrop (the --fade colour, set per
- * theme on the viewport). It is one static overlay instead of an opacity per
- * card, so panning needs no per-frame fade work. The ramp is a smootherstep:
- * clear in the middle half, solid at the very edge.
- */
-const RAMP =
-  "rgb(var(--fade)), rgb(var(--fade)/.9) 6%, rgb(var(--fade)/.5) 12.5%, rgb(var(--fade)/.1) 19%, transparent 25% 75%, rgb(var(--fade)/.1) 81%, rgb(var(--fade)/.5) 87.5%, rgb(var(--fade)/.9) 94%, rgb(var(--fade))";
-const VIGNETTE = `linear-gradient(to right, ${RAMP}), linear-gradient(to bottom, ${RAMP})`;
+const VIGNETTE =
+  "radial-gradient(ellipse at center, transparent 45%, rgb(54 22 17 / 38%) 100%)";
 /** Hover effects stay off until panning has been idle this long (ms). */
 const PAN_IDLE_MS = 120;
 
@@ -84,6 +78,16 @@ function DirectionHint({
   );
 }
 
+function getCardTilt(id: string) {
+  let value = 0;
+
+  for (const character of id) {
+    value += character.charCodeAt(0);
+  }
+
+  return ((value % 5) - 2) * 0.6;
+}
+
 const CanvasCard = memo(function CanvasCard({
   item,
   scale,
@@ -101,7 +105,15 @@ const CanvasCard = memo(function CanvasCard({
         transform: scale === 1 ? undefined : `scale(${scale})`,
       }}
     >
-      <ProjectCard project={item.project} />
+      <div
+        className={styles.pinnedCard}
+        style={{
+          transform: `rotate(${getCardTilt(item.project.id)}deg)`,
+        }}
+      >
+        <ProjectCard project={item.project} />
+        <span aria-hidden="true" className={styles.pushpin} />
+      </div>
     </div>
   );
 });
@@ -162,11 +174,11 @@ export default function ExploreCanvas({ projects }: { projects: Project[] }) {
     <div
       ref={viewportRef}
       {...handlers}
-      className={`relative h-dvh w-full touch-none select-none overflow-clip bg-background text-foreground [--fade:228_228_231] bg-[radial-gradient(ellipse_at_center,#fff_0%,#f4f4f5_45%,#e4e4e7_75%)] dark:[--fade:0_0_0] dark:bg-[radial-gradient(ellipse_at_center,#232323_0%,#0a0a0a_45%,#000_75%)] ${
+      className={`${styles.board} relative h-dvh w-full touch-none select-none overflow-clip text-foreground ${
         dragging ? "cursor-grabbing" : "cursor-grab"
       }`}
     >
-      <h1 className="pointer-events-none absolute left-6 top-5 z-20 text-2xl font-semibold tracking-tight text-foreground/50">
+      <h1 className="pointer-events-none absolute left-6 top-5 z-20 text-2xl font-semibold tracking-tight text-[#fff4da]">
         Website Name
       </h1>
 
