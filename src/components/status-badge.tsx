@@ -1,7 +1,8 @@
 import { CircleCheck, CircleDashed, LoaderCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import type { Project } from "@/types/project";
 
-export type ProjectStatus = "prototype" | "ongoing" | "completed";
+export type ProjectStatus = Project["projectStatus"];
 
 export function StatusBadge({ status }: { status: ProjectStatus }) {
   let label = "Prototype";

@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Project } from "@/types/project";
+import { StatusBadge } from "@/components/status-badge";
+import { ProjectTag } from "@/components/projects/ProjectTag";
 import placeholderImage from "@/../public/images/project_placeholder.png";
 
 const MAX_VISIBLE_TAGS = 3;
@@ -17,19 +19,18 @@ function isRemoteImage(src: string) {
   return src.startsWith("http://") || src.startsWith("https://");
 }
 
-function getHoverStatusLine(project: Project) {
-  const { projectStatus, isSeekingCollaborators, collaborationAvailability } =
-    project;
+function getCollaborationLine(project: Project) {
+  const { isSeekingCollaborators, collaborationAvailability } = project;
 
   if (!isSeekingCollaborators) {
-    return `${projectStatus} | not seeking collaborators`;
+    return "Not seeking collaborators";
   }
 
   if (collaborationAvailability) {
-    return `${projectStatus} | ${collaborationAvailability} collaborators needed`;
+    return `Seeking collaborators (${collaborationAvailability})`;
   }
 
-  return `${projectStatus} | seeking collaborators`;
+  return "Seeking collaborators";
 }
 
 function StarIcon({ filled }: { filled: boolean }) {
@@ -86,6 +87,7 @@ export default function ProjectCard({ project }: { project: Project }) {
     description,
     creator,
     tags,
+    projectStatus,
     difficulty,
     isSeekingCollaborators,
     createdAt,
@@ -144,17 +146,15 @@ export default function ProjectCard({ project }: { project: Project }) {
               >
                 {formatCreatedAt(createdAt)}
               </time>
+              <StatusBadge status={projectStatus} />
               <p className="text-xs font-medium leading-4 break-words text-amber-700">
-                {getHoverStatusLine(project)}
+                {getCollaborationLine(project)}
               </p>
               {visibleTags.length > 0 ? (
                 <ul className="flex flex-wrap gap-1.5">
                   {visibleTags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="bg-[#f0cf6c]/70 px-2 py-0.5 text-[0.65rem] font-medium text-[#3d2a0a]"
-                    >
-                      {tag}
+                    <li key={tag} className="max-w-full">
+                      <ProjectTag label={tag} color="amber" />
                     </li>
                   ))}
                 </ul>
