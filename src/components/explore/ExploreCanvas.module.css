@@ -1,0 +1,56 @@
+.board {
+  --board-color: #cb9b64;
+  --board-top: #731927;
+  --board-blend: #924639;
+  --board-dot: rgb(79 43 28 / 10%);
+
+  background-color: var(--board-color);
+  background-image:
+    radial-gradient(circle at 2px 2px, var(--board-dot) 1px, transparent 1.5px),
+    linear-gradient(
+      to bottom,
+      var(--board-top) 0%,
+      var(--board-blend) 10%,
+      transparent 27%
+    );
+  background-size: 7px 7px, 100% 100%;
+}
+
+:global(.dark) .board {
+  --board-color: #856047;
+  --board-top: #4d1420;
+  --board-blend: #6a342e;
+  --board-dot: rgb(43 21 17 / 14%);
+}
+
+.pinnedCard {
+  position: relative;
+  transform-origin: 50% 38px;
+  filter:
+    drop-shadow(1px 2px 2px rgb(73 39 21 / 12%))
+    drop-shadow(3px 6px 10px rgb(73 39 21 / 12%));
+}
+
+.pushpin {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+
+  background: radial-gradient(
+    circle at 32% 25%,
+    #ffaaa0 0%,
+    #e44b52 30%,
+    #bd2638 65%,
+    #791b2b 100%
+  );
+
+  box-shadow:
+    1px 3px 3px rgb(60 24 16 / 35%),
+    inset 0 -2px 2px rgb(100 10 25 / 25%);
+}
